@@ -29,24 +29,22 @@ java {
 pmd {
     toolVersion = "7.0.0"
     consoleOutput = true
-    sourceSets = [sourceSets.main, sourceSets.test]
-    ruleSets = [
-            'java-basic',
-            'java-design',
-            'java-unusedcode'
-    ]
-}
-tasks.named('pmdMain') {
-    // 모든 파일을 일단 제외
-    excludePatterns = ['**/*']
-    // 특정 패키지만 포함
-    includePatterns = ['**/step4_winner/**']
+    ignoreFailures=false
+    incrementalAnalysis=true
+    ruleSets = []
+    ruleSetFiles= files(rootProject.file(".github/pmd/ruleset.xml"))
 }
 
-tasks.named('pmdTest') {
-    // 모든 파일을 일단 제외
-    excludePatterns = ['**/*']
+tasks.named('pmdMain') {
+//    excludes =['**/*',]
+    includes = ['**/step4_winner/*',]
 }
+tasks.named('pmdTest') {
+    excludes =[
+            '**/*',
+    ]
+}
+
 
 tasks.named('compileJava') {
     dependsOn clean
