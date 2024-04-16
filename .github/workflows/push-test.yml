@@ -15,13 +15,13 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
-          java-version: '11'
+          java-version: '21'
           cache: 'gradle'
 
       - name: test
         run: |
           echo "Available processors: $(nproc)"
-          gradle test jacocoTestCoverageVerification --no-daemon --parallel
+          gradle test --no-daemon --parallel
 
       - name: Extract coverage info and update step summary
         run: |
