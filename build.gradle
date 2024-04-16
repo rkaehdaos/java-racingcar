@@ -32,7 +32,7 @@ pmd {
     ignoreFailures=false
     incrementalAnalysis=true
     ruleSets = []
-    ruleSetFiles= files(rootProject.file(".github/pmd/ruleset.xml"))
+    ruleSetFiles= files(rootProject.file(".github/pmd/ruleset.xml") as Object)
 }
 
 tasks.named('pmdMain') {
