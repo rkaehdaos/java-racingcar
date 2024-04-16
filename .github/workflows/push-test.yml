@@ -48,12 +48,14 @@ jobs:
           echo "Instruction Coverage: $instruction_coverage" >> $GITHUB_STEP_SUMMARY
           echo "Branch Coverage: $branch_coverage" >> $GITHUB_STEP_SUMMARY
 
-      - name: Upload JaCoCo coverage report
+      - name: Upload report if workflow failure
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: jacoco-report
-          path: build/reports/jacoco/test/html
+          name: report-jacoco
+          path: |
+            build/reports/jacoco/test/html
+            build/reports/pmd/*.html
 
       - name: Notification
         uses: 8398a7/action-slack@v3
