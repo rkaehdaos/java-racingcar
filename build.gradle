@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'pmd'
 }
 
 version '1.0'
@@ -24,12 +25,39 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
+
+pmd {
+    toolVersion = "7.0.0"
+    consoleOutput = true
+    sourceSets = [sourceSets.main, sourceSets.test]
+    ruleSets = [
+            'java-basic',
+            'java-design',
+            'java-unusedcode'
+    ]
+}
+tasks.named('pmdMain') {
+    // 모든 파일을 일단 제외
+    excludePatterns = ['**/*']
+    // 특정 패키지만 포함
+    includePatterns = ['**/step4_winner/**']
+}
+
+tasks.named('pmdTest') {
+    // 모든 파일을 일단 제외
+    excludePatterns = ['**/*']
+}
+
+tasks.named('compileJava') {
+    dependsOn clean
+}
+
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:deprecation"
 }
 
 tasks.named('test') {
-    dependsOn clean
+//    dependsOn clean, pmdMain
     useJUnitPlatform() // Junit5 사용: 테스트 종속성에 JUnit Jupiter API와 JUnit Jupiter Engine을 포함해야 함.
     maxParallelForks = Runtime.runtime.availableProcessors()
     finalizedBy jacocoTestCoverageVerification
@@ -39,7 +67,7 @@ jacocoTestReport {
 }
 jacocoTestCoverageVerification {
     dependsOn jacocoTestReport
-    violationRules{
+    violationRules {
         rule { limit { minimum = 0.8 } }
     }
 }
