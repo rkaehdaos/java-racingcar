@@ -21,7 +21,7 @@ jobs:
           cache: 'gradle'
 
       - name: test
-        run: gradle test --no-daemon --parallel
+        run: gradle build --no-daemon --parallel
 
       - name: Extract coverage info and update step summary
         run: |
