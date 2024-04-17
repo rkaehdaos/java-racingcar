@@ -43,18 +43,31 @@ jobs:
           else
             branch_coverage=$(echo "scale=2; $branches_covered / $total_branches * 100" | bc)%
           fi
+          
+          echo '# Summary' >> $GITHUB_STEP_SUMMARY
           echo 'GITHUB_STEP_SUMMARY에 커버리지 정보 추가';
-          echo "JaCoCo 커버리지 요약" >> $GITHUB_STEP_SUMMARY
-          echo "Instruction Coverage: $instruction_coverage" >> $GITHUB_STEP_SUMMARY
-          echo "Branch Coverage: $branch_coverage" >> $GITHUB_STEP_SUMMARY
+          echo "## JaCoCo 커버리지 요약" >> $GITHUB_STEP_SUMMARY
+          echo "- Instruction Coverage: $instruction_coverage" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch Coverage: $branch_coverage" >> $GITHUB_STEP_SUMMARY
+
       - name: Extract PMD info and update step summary
         run: |
           echo 'PMD 파일에서 정보 추출';
           total_violations=$(xmllint --xpath "count(//violation)" build/reports/pmd/main.xml)
           echo 'PMD 요약 정보 추가';
-          echo "PMD Code Analysis" >> $GITHUB_STEP_SUMMARY
-          echo "Total Violations: $total_violations" >> $GITHUB_STEP_SUMMARY
-    
+          echo "## PMD Code Analysis" >> pmd_summary.md
+          echo "### Total Violations: $total_violations" >> pmd_summary.md
+          echo '각 file 태그를 찾아 파일 경로를 추출하고, 내부의 violation 정보를 처리'
+          grep -oP '<file name="\K[^"]+' build/reports/pmd/main.xml | while read -r file_path; do
+            echo "### File: $file_path" >> pmd_summary.md
+            echo 'file 내부의 violation 정보 추출'
+            grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -oP '<violation beginline="\K[^"]+' - | while read -r line; do
+              message=$(grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -A 2 "beginline=\"$line\"" | grep -oP '>.*?</violation>' | sed -e 's/>//;s/<\/violation>//')
+              url=$(grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -A 2 "beginline=\"$line\"" | grep -oP 'externalInfoUrl="\K[^"]+')
+               echo "- Line $line: [$message]($url)" >> pmd_summary.md
+            done
+          done
+          cat pmd_summary.md >> $GITHUB_STEP_SUMMARY
 
       - name: Upload report if workflow failure
         uses: actions/upload-artifact@v4
