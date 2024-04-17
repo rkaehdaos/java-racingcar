@@ -7,7 +7,7 @@
         메서드 길이를 15줄로 제한하는 custom ruleset
     </description>
 
-<!--    https://docs.pmd-code.org/latest/pmd_rules_java_design.html#ncsscount-->
+    <!-- https://docs.pmd-code.org/latest/pmd_rules_java_design.html#ncsscount-->
     <rule ref="category/java/design.xml/NcssCount">
         <properties>
             <property name="methodReportLevel" value="15"/> <!-- 기본값 60 -->
