@@ -5,7 +5,6 @@ on:
 
 jobs:
   onPushTest:
-    if: github.event.pull_request.opened == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -14,7 +13,7 @@ jobs:
       - name: setup-java-21
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu' # See 'Supported distributions' for available options
+          distribution: 'zulu'
           java-version: '21'
           cache: 'gradle'
 
@@ -43,25 +42,25 @@ jobs:
           else
             branch_coverage=$(echo "scale=2; $branches_covered / $total_branches * 100" | bc)%
           fi
-          
-          echo '# GitHub Action Summary' >> $GITHUB_STEP_SUMMARY
+          echo '# GitHub Action Summary' >> PUSH_summary.md
           echo 'GITHUB_STEP_SUMMARY에 커버리지 정보 추가';
-          echo "## JaCoCo 커버리지 요약" >> $GITHUB_STEP_SUMMARY
-          echo "- Instruction Coverage: $instruction_coverage" >> $GITHUB_STEP_SUMMARY
-          echo "- Branch Coverage: $branch_coverage" >> $GITHUB_STEP_SUMMARY
+          echo "## JaCoCo 커버리지 요약" >> PUSH_summary.md
+          echo "- Instruction Coverage: $instruction_coverage" >> PUSH_summary.md
+          echo "- Branch Coverage: $branch_coverage" >> PUSH_summary.md
 
       - name: Extract PMD info and update step summary
         run: |
           echo 'PMD 파일에서 정보 추출: XML 구조에 의존적이므로 구조가 변경되면 스크립트도 업데이트가 필요';
           echo 'xml이 매우 크면 성능에 문제가 생길 수 있으므로 더 효율적인 파싱 방법의 고려가 필요';
-          echo "## PMD Code Analysis" >> pmd_summary.md
+          echo "## PMD Code Analysis" >> PUSH_summary.md
+          total_violations=$(grep -c '<violation' build/reports/pmd/main.xml)
           echo "### Total Violations: $total_violations"
           echo '각 file 태그를 찾아 파일 경로를 추출하고, 내부의 violation 정보를 처리'
           awk '/<file name=/,/<\/file>/' build/reports/pmd/main.xml | awk '
             /<file name="/ {
               filename=gensub(/.*<file name="([^"]+).*/, "\\1", "g");
               print "### File: " filename;
-              print "### File: " filename >> "pmd_summary.md";
+              print "### File: " filename >> "PUSH_summary.md";
               next;
             }
             /<violation/,/<\/violation>/ {
@@ -72,14 +71,14 @@ jobs:
                 content = "";
               } else if ($0 ~ /<\/violation>/) {
                 print "- Line " line ": [" content "](" url ")";
-                print "- Line " line ": [" content "](" url ")" >> "pmd_summary.md";
+                print "- Line " line ": [" content "](" url ")" >> "PUSH_summary.md";
                 capturing = 0;
               } else if (capturing) {
                 content = content $0;
               }
             }
           '
-          cat pmd_summary.md >> $GITHUB_STEP_SUMMARY
+          cat PUSH_summary.md >> $GITHUB_STEP_SUMMARY
 
       - name: Upload report if workflow failure
         uses: actions/upload-artifact@v4
@@ -95,8 +94,7 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          author_name: GeunChang Ahn
-          job_name: onPushTest
+          author_name: my workflow bot
           fields: repo,message,commit,author,eventName,ref,workflow,job,took,
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
