@@ -53,11 +53,6 @@ jobs:
           ls -al PUSH_summary.md
           total_violations=$(grep -c '<violation' build/reports/pmd/main.xml)
           echo '### Total Violations: $total_violations'
-          if [ "$total_violations" -eq 0 ]; then
-            echo "### 문제 없음"
-          else
-            echo "### 문제 있음"
-          fi
 
       - name: '실패 시 보고서 업로드'
         uses: actions/upload-artifact@v4
