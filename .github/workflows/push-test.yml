@@ -82,7 +82,7 @@ jobs:
               }
             '
           fi
-          cat PUSH_summary.md >> $GITHUB_STEP_SUMMARY
+          cat PUSH_summary.md
 
       - name: '실패 시 보고서 업로드'
         uses: actions/upload-artifact@v4
