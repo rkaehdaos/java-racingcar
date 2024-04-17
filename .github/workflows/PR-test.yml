@@ -99,8 +99,7 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          author_name: GeunChang Ahn
-          job_name: onPushTest
+          author_name: my workflow bot
           fields: repo,message,commit,author,eventName,ref,workflow,job,took,
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
