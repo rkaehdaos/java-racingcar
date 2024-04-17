@@ -29,21 +29,20 @@ java {
 pmd {
     toolVersion = "7.0.0"
     consoleOutput = true
-    ignoreFailures=false
-    incrementalAnalysis=true
-    ruleSets = []
-    ruleSetFiles= files(rootProject.file(".github/pmd/ruleset.xml") as Object)
+    ignoreFailures = false
+    incrementalAnalysis = true
+    ruleSets = [] // 이 줄은 PMD 7.0.0 이상에서는 필요 없습니다. 규칙 파일만 사용합니다.
 }
 
 tasks.named('pmdMain') {
 //    excludes =['**/*',]
     includes = ['**/step4_winner/*',]
+    ruleSetFiles = files(rootProject.file(".github/pmd/ruleset.xml") as Object)
 }
 tasks.named('pmdTest') {
 //    excludes =['**/*',]
     includes = ['**/step4_winner/*',]
 }
-
 
 tasks.named('compileJava') {
     dependsOn clean
