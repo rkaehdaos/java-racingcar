@@ -53,7 +53,7 @@ jobs:
       - name: Extract PMD info and update step summary
         run: |
           echo 'PMD 파일에서 정보 추출';
-          total_violations=$(xmllint --xpath "count(//violation)" build/reports/pmd/main.xml)
+          total_violations=$(grep -c '<violation' build/reports/pmd/main.xml)
           echo 'PMD 요약 정보 추가';
           echo "## PMD Code Analysis" >> pmd_summary.md
           echo "### Total Violations: $total_violations" >> pmd_summary.md
