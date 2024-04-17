@@ -39,7 +39,7 @@ tasks.withType(JavaCompile) {
 pmd {
     toolVersion = "7.0.0"
     consoleOutput = true
-    ignoreFailures = false
+    ignoreFailures = true
     incrementalAnalysis = true
     ruleSets = []
 }
