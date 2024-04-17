@@ -1,6 +1,10 @@
 name: Gradle PR test On GitHub Action
 on:
   pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 jobs:
   onPRTest:
