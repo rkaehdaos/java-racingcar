@@ -52,7 +52,8 @@ jobs:
 
       - name: Extract PMD info and update step summary
         run: |
-          echo 'PMD 파일에서 정보 추출';
+          echo 'PMD 파일에서 정보 추출: XML 구조에 의존적이므로 구조가 변경되면 스크립트도 업데이트가 필요';
+          echo 'xml이 매우 크면 성능에 문제가 생길 수 있으므로 더 효율적인 파싱 방법의 고려가 필요';
           total_violations=$(grep -c '<violation' build/reports/pmd/main.xml)
           echo 'PMD 요약 정보 추가';
           echo "## PMD Code Analysis" >> pmd_summary.md
@@ -62,9 +63,10 @@ jobs:
             echo "### File: $file_path" >> pmd_summary.md
             echo 'file 내부의 violation 정보 추출'
             grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -oP '<violation beginline="\K[^"]+' - | while read -r line; do
-              message=$(grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -A 2 "beginline=\"$line\"" | grep -oP '>.*?</violation>' | sed -e 's/>//;s/<\/violation>//')
+              echo '메시지 추출 부분 수정'
+              message=$(grep -A 20 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -A 19 "beginline=\"$line\"" | grep -oP '(?<=<violation.*>).*(?=</violation>)')
               url=$(grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -A 2 "beginline=\"$line\"" | grep -oP 'externalInfoUrl="\K[^"]+')
-               echo "- Line $line: [$message]($url)" >> pmd_summary.md
+              echo "- Line $line: [$message]($url)" >> pmd_summary.md
             done
           done
           cat pmd_summary.md >> $GITHUB_STEP_SUMMARY
