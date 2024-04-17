@@ -64,12 +64,19 @@ jobs:
               print "### File: " filename >> "pmd_summary.md";
               next;
             }
-            /<violation/ {
-              line=gensub(/.*beginline="([^"]+).*/, "\\1", "g");
-              message=gensub(/.*>(.*)<.*/, "\\1", "g");
-              url=gensub(/.*externalInfoUrl="([^"]+).*/, "\\1", "g");
-              print "- Line " line ": [" message "](" url ")";
-              print "- Line " line ": [" message "](" url ")" >> "pmd_summary.md";
+            /<violation/,/<\/violation>/ {
+              if ($0 ~ /<violation/) {
+                line=gensub(/.*beginline="([^"]+).*/, "\\1", "g");
+                url=gensub(/.*externalInfoUrl="([^"]+).*/, "\\1", "g");
+                capturing = 1;
+                content = "";
+              } else if ($0 ~ /<\/violation>/) {
+                print "- Line " line ": [" content "](" url ")";
+                print "- Line " line ": [" content "](" url ")" >> "pmd_summary.md";
+                capturing = 0;
+              } else if (capturing) {
+                content = content $0;
+              }
             }
           '
           cat pmd_summary.md >> $GITHUB_STEP_SUMMARY
