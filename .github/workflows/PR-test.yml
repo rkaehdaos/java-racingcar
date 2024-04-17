@@ -1,9 +1,9 @@
 name: Gradle PR test On GitHub Action
-on: pull_request
+on:
+  pull_request:
 
 jobs:
   onPRTest:
-
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -78,7 +78,6 @@ jobs:
 
       - name: Comment SUMMARY Report on PR
         uses: peter-evans/create-or-update-comment@v4
-        if: github.event.pull_request.opened == true
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
