@@ -2,6 +2,7 @@ name: Gradle PR test On GitHub Action
 on:
   pull_request:
     types: [opened,reopened,synchronize]
+    branches-ignore: [*]
 
 jobs:
   onPRTest:
