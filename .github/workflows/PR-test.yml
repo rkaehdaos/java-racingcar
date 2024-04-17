@@ -10,7 +10,7 @@ jobs:
       - name: '소스 checkout'
         uses: actions/checkout@master
 
-      - name: 'setup graalvm 21'
+      - name: 'graalvm jdk21 setup'
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '21'
