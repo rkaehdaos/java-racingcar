@@ -1,12 +1,11 @@
 name: Gradle test On GitHub Action
 on:
   push:
-    branches-ignore: [ 'main','master','rkaehdaos' ]
+    branches-ignore: ['main','master']
 
 jobs:
   onPushTest:
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request == null }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@master
