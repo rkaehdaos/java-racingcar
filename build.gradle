@@ -42,17 +42,18 @@ pmd {
     ignoreFailures = true
     incrementalAnalysis = true
     ruleSets = []
+    ruleSetFiles = files(rootProject.file(".github/pmd/ruleset.xml") as Object)
 }
 
 tasks.named('pmdMain') {
     // excludes =['**/*',]
     includes = ['**/step4_winner/*',]
-    ruleSetFiles = files(rootProject.file(".github/pmd/ruleset.xml") as Object)
+//    ruleSetFiles = files(rootProject.file(".github/pmd/ruleset.xml") as Object)
 }
 
 tasks.named('pmdTest') {
-    // excludes =['**/*',]
-    includes = ['**/step4_winner/*',]
+     excludes =['**/*',]
+//    includes = ['**/step4_winner/*',]
 }
 
 tasks.named('test') {

@@ -54,7 +54,7 @@ jobs:
           echo 'xml이 매우 크면 성능에 문제가 생길 수 있으므로 더 효율적인 파싱 방법의 고려가 필요';
           echo "## PMD Code Analysis" >> PUSH_summary.md
           total_violations=$(grep -c '<violation' build/reports/pmd/main.xml)
-          echo "### Total Violations: $total_violations"
+          echo "### Total Violations: $total_violations" >> PR_summary.md
           echo '각 file 태그를 찾아 파일 경로를 추출하고, 내부의 violation 정보를 처리'
           awk '/<file name=/,/<\/file>/' build/reports/pmd/main.xml | awk '
             /<file name="/ {
