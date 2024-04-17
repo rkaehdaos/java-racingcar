@@ -47,6 +47,14 @@ jobs:
           echo "JaCoCo 커버리지 요약" >> $GITHUB_STEP_SUMMARY
           echo "Instruction Coverage: $instruction_coverage" >> $GITHUB_STEP_SUMMARY
           echo "Branch Coverage: $branch_coverage" >> $GITHUB_STEP_SUMMARY
+      - name: Extract PMD info and update step summary
+        run: |
+          echo 'PMD 파일에서 정보 추출';
+          total_violations=$(xmllint --xpath "count(//violation)" build/reports/pmd/main.xml)
+          echo 'PMD 요약 정보 추가';
+          echo "PMD Code Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "Total Violations: $total_violations" >> $GITHUB_STEP_SUMMARY
+    
 
       - name: Upload report if workflow failure
         uses: actions/upload-artifact@v4
