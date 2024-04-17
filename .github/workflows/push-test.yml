@@ -56,15 +56,18 @@ jobs:
           echo 'xml이 매우 크면 성능에 문제가 생길 수 있으므로 더 효율적인 파싱 방법의 고려가 필요';
           total_violations=$(grep -c '<violation' build/reports/pmd/main.xml)
           echo 'PMD 요약 정보 추가';
+          echo "## PMD Code Analysis"
           echo "## PMD Code Analysis" >> pmd_summary.md
+          echo "### Total Violations: $total_violations"
           echo "### Total Violations: $total_violations" >> pmd_summary.md
           echo '각 file 태그를 찾아 파일 경로를 추출하고, 내부의 violation 정보를 처리'
           grep -oP '<file name="\K[^"]+' build/reports/pmd/main.xml | while read -r file_path; do
+            echo "### File: $file_path"
             echo "### File: $file_path" >> pmd_summary.md
             echo 'file 내부의 violation 정보 추출'
             grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -oP '<violation beginline="\K[^"]+' - | while read -r line; do
               echo '메시지 추출 부분 수정'
-              message=$(grep -A 20 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -A 19 "beginline=\"$line\"" | grep -oP '(?<=<violation.*>).*(?=</violation>)')
+              message=$(grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -A 2 "beginline=\"$line\"" | grep -oP '>.*?</violation>' | sed -e 's/>//;s/<\/violation>//')
               url=$(grep -A 3 "<file name=\"$file_path\"" build/reports/pmd/main.xml | grep -A 2 "beginline=\"$line\"" | grep -oP 'externalInfoUrl="\K[^"]+')
               echo "- Line $line: [$message]($url)" >> pmd_summary.md
             done
