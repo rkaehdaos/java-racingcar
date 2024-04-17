@@ -43,7 +43,7 @@ public final class Step4Application {
                                  ResultView resultView) {
         resultView.printResultHeader();
         for(int i = 0; i < race.getTries(); i++) {
-            race.runRound();
+            race.runRace();
             resultView.displayRaceResult(race.getCars());
         }
         resultView.printFinalWinner(race.getCars());

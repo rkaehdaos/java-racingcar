@@ -46,7 +46,7 @@ class RaceTest {
         Race race = new Race(cars,1);
 
         // WHEN
-        race.runRound();
+        race.runRace();
 
         // then
         boolean anyCarMoved = cars.stream().anyMatch(car -> car.getDistance() > 1);

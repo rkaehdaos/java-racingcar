@@ -18,7 +18,7 @@ public class Race {
         this.tries = tries;
     }
 
-    public void runRound() {
+    public void runRace() {
         cars.forEach(car -> car.move(random.nextInt(10)));
     }
 }
