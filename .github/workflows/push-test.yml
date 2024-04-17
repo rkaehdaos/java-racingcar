@@ -52,7 +52,9 @@ jobs:
         run: |
           ls -al PUSH_summary.md
           total_violations=$(grep -c '<violation' build/reports/pmd/main.xml)
-          echo '### Total Violations: $total_violations'
+          echo '****'
+          echo $total_violations
+          echo '****'
 
       - name: '실패 시 보고서 업로드'
         uses: actions/upload-artifact@v4
