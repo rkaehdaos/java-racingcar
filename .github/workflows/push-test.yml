@@ -44,7 +44,7 @@ jobs:
             branch_coverage=$(echo "scale=2; $branches_covered / $total_branches * 100" | bc)%
           fi
           
-          echo '# Summary' >> $GITHUB_STEP_SUMMARY
+          echo '# GitHub Action Summary' >> $GITHUB_STEP_SUMMARY
           echo 'GITHUB_STEP_SUMMARY에 커버리지 정보 추가';
           echo "## JaCoCo 커버리지 요약" >> $GITHUB_STEP_SUMMARY
           echo "- Instruction Coverage: $instruction_coverage" >> $GITHUB_STEP_SUMMARY
