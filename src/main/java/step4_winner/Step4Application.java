@@ -1,5 +1,7 @@
 package step4_winner;
 
+import step4_winner.domain.Car;
+import step4_winner.domain.Race;
 import step4_winner.view.InputView;
 import step4_winner.view.ResultView;
 
@@ -8,9 +10,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public final class CarRacingWinner {
-    private CarRacingWinner() {
-        throw new UnsupportedOperationException("이 유틸리티 클래스는 인스턴스화할 수 없습니다.");
+public final class Step4Application {
+    private Step4Application() {
+        throw new UnsupportedOperationException("이 유틸 클래스는 인스턴스화할 수 없습니다.");
     }
 
     public static void main(String[] args) {
@@ -20,7 +22,6 @@ public final class CarRacingWinner {
 
         // input
         Race race = prepare(inputView);
-
 
         // result
         runRaces(race, resultView);
@@ -33,6 +34,7 @@ public final class CarRacingWinner {
         List<Car> cars = Arrays.stream(carNames)
                 .map(Car::new)
                 .collect(Collectors.toList());
+
         return new Race(cars, numberOfTries);
     }
 
