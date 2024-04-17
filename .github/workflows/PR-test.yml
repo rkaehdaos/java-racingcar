@@ -7,20 +7,22 @@ jobs:
   onPRTest:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
+      - name: '소스 checkout'
         uses: actions/checkout@master
 
-      - name: setup-java-21
-        uses: actions/setup-java@v4
+      - name: 'setup graalvm 21'
+        uses: graalvm/setup-graalvm@v1
         with:
-          distribution: 'zulu'
           java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
           cache: 'gradle'
 
-      - name: test
+      - name: gradle 빌드
         run: gradle build --no-daemon --parallel
 
-      - name: Extract coverage info and update step summary
+      - name: 커버리지 정보 및 요약 Extract coverage info and update step summary
         run: |
           echo 'CSV 파일에서 커버리지 정보 추출';
           awk -F',' 'NR > 1 {instructions_covered += $5; instructions_missed += $4; branches_covered += $7; branches_missed += $6} END {print instructions_covered, instructions_missed, branches_covered, branches_missed}' build/reports/jacoco/test/jacocoTestReport.csv > coverage.txt
