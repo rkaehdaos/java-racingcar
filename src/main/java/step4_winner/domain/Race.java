@@ -6,8 +6,9 @@ import step4_winner.strategy.MovingStrategy;
 
 import java.util.List;
 
+@Getter
 public class Race {
-    @Getter private final List<Car> cars;
+    private final List<Car> cars;
 
     public Race(List<Car> cars) {
         if (cars.isEmpty())
