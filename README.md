@@ -29,7 +29,7 @@
     - https://github.com/pmd/pmd/issues/2127#issue-527718378
     - Enforcing length limits with LoC("lines of code") is not very meaningful, could even be called a bad practice
     - **LoC로 길이 제한을 적용하는 것은 그다지 의미가 없으며, 심지어 나쁜 관행이라고 할 수도 있습니다**
-  - [x] NCSS 15 라인 설정
+  - [x] NCSS 15 라인 설정 - PMD Custom Rule apply
 
 - [ ] 단일 책임 원칙으로 메서드가 되어 있는지 확인
 - [ ] 모든 로직에 단위 테스트 구현 - UI 제외
