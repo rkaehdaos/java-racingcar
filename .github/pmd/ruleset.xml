@@ -10,7 +10,7 @@
     <!-- https://docs.pmd-code.org/latest/pmd_rules_java_design.html#ncsscount-->
     <rule ref="category/java/design.xml/NcssCount">
         <properties>
-            <property name="methodReportLevel" value="15"/> <!-- 기본값 60 -->
+            <property name="methodReportLevel" value="5"/> <!-- 기본값 60 -->
             <property name="classReportLevel" value="1500"/> <!--default-->
         </properties>
     </rule>
