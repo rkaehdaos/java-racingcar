@@ -40,9 +40,8 @@ tasks.named('pmdMain') {
     includes = ['**/step4_winner/*',]
 }
 tasks.named('pmdTest') {
-    excludes =[
-            '**/*',
-    ]
+//    excludes =['**/*',]
+    includes = ['**/step4_winner/*',]
 }
 
 
