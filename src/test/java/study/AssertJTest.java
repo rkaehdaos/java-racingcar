@@ -1,17 +1,15 @@
 package study;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.BDDAssertions.then;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.BDDAssertions.then;
 
 
 public class AssertJTest {
@@ -38,7 +36,7 @@ public class AssertJTest {
 
         // 재귀적 필드 비교 -> 성공
         // deprecated
-        assertThat(fido).isEqualToComparingFieldByFieldRecursively(fidosClone);
+//        assertThat(fido).isEqualToComparingFieldByFieldRecursively(fidosClone);
 
         // 위를 대체할 수 있는 새로운 메서드
         // 더 많은 유연성과 더 나은 REPORT, 더 쉬운 사용법

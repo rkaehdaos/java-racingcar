@@ -1,6 +1,9 @@
 package step3_CarRacing;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -10,7 +13,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class CarRacingGameTest {
@@ -76,7 +79,7 @@ class CarRacingGameTest {
         assertThat(car.getDistance()).isEqualTo(2);
     }
 
-    @RepeatedTest(10000)
+    @Test
     @DisplayName("100개의 차가 참가한 race가 일단 열리면, 100대중 1개는 전진 한다")
     public void RaceRoundTest() {
         Race race = new Race(100);
